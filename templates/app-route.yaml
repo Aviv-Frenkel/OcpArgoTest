@@ -1,0 +1,31 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    openshift.io/host.generated: "true"
+  creationTimestamp: "2024-08-07T12:40:50Z"
+  labels:
+    app: docker-client-i
+    app.kubernetes.io/component: docker-client-i
+    app.kubernetes.io/instance: docker-client-i
+  name: app
+  namespace: "{{ .Release.Namespace }}"  # Enclosed in double quotes
+spec:
+  host: app-{{ .Release.Namespace }}.{{ .Values.webhost }}
+  port:
+    targetPort: 8000-tcp
+  to:
+    kind: Service
+    name: docker-client-i
+    weight: 100
+  wildcardPolicy: None
+status:
+  ingress:
+  - conditions:
+    - lastTransitionTime: "2024-08-07T12:40:50Z"
+      status: "True"
+      type: Admitted
+    host: app-{{ .Release.Namespace }}.{{ .Values.webhost }}
+    routerCanonicalHostname: router-default.{{ .Values.webhost }}
+    routerName: default
+    wildcardPolicy: None

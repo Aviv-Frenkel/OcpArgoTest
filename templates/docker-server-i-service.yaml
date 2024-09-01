@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: "2024-08-05T08:44:38Z"
+  labels:
+    app: docker-server-i
+    app.kubernetes.io/component: docker-server-i
+    app.kubernetes.io/instance: docker-server-i
+  name: docker-server-i
+  namespace: {{ .Release.Namespace }}
+  resourceVersion: "546136795"
+  uid: 5554bcc4-401d-467a-b927-c803f66816a1
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: 3000-tcp
+    port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    deployment: docker-server-i
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

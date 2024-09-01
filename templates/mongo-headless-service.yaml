@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2024-08-18T14:04:01Z"
+  labels:
+    app: mongo
+  name: mongo-headless
+  namespace: "{{ .Release.Namespace }}"
+  resourceVersion: "554731968"
+  uid: e1d71f0e-468f-44b5-97d9-6337ec51f550
+spec:
+  clusterIP: None
+  clusterIPs:
+  - None
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: mongo
+    port: 27017
+    protocol: TCP
+    targetPort: 27017
+  selector:
+    app: mongo
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

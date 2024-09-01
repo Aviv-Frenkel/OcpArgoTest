@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  MONGODB_HOST: mongodb://mongo-0.mongo-headless.{{ .Release.Namespace }}:27017,mongo-1.mongo-headless.{{ .Release.Namespace }}:27017,mongo-2.mongo-headless.{{ .Release.Namespace }}:27017/?replicaSet=rs0&authSource=admin'
+  SERVER_URL: http://server-{{ .Release.Namespace }}.{{ .Values.webhost }}/api
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2024-08-11T14:33:20Z"
+  name: mongo-config
+  namespace: "{{ .Release.Namespace }}"
+  resourceVersion: "554759914"
+  uid: 5a4c52af-25af-4da9-806a-6eea1c684bd6

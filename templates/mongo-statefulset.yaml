@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  creationTimestamp: "2024-08-18T14:06:55Z"
+  generation: 1
+  name: mongo
+  namespace: {{ .Values.namespace }}
+  resourceVersion: "555229201"
+  uid: 016d037f-f77f-4eeb-ab6e-ebebe9d1bbac
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: mongo
+  serviceName: mongo-headless
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: mongo
+    spec:
+      containers:
+      - command:
+        - mongod
+        - --replSet
+        - rs0
+        - --bind_ip
+        - 0.0.0.0
+        image: mongo@sha256:24ecfe95bbb98cd49e1d968c204515d4033ef86621e68ce148cf1d0a5a0f8a82
+        imagePullPolicy: IfNotPresent
+        name: mongo
+        ports:
+        - containerPort: 80
+          name: web
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /data/db
+          name: mongo-volume
+        - mountPath: /data/configdb
+          name: mongo-volume
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 10
+  updateStrategy:
+    rollingUpdate:
+      partition: 0
+    type: RollingUpdate
+  volumeClaimTemplates:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      creationTimestamp: null
+      name: mongo-volume
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 3Gi
+      volumeMode: Filesystem
+    status:
+      phase: Pending
+status:
+  availableReplicas: 3
+  collisionCount: 0
+  currentReplicas: 3
+  currentRevision: mongo-d548f6449
+  observedGeneration: 1
+  readyReplicas: 3
+  replicas: 3
+  updateRevision: mongo-d548f6449
+  updatedReplicas: 3

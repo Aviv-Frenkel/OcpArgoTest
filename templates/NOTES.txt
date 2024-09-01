@@ -1,0 +1,1 @@
+Aviv's Hafifa App installed using helm chart! Yay! 

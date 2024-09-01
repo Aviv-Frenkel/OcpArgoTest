@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mongo-rs-init
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  template:
+    spec:
+      containers:
+      - name: rs-init
+        image: mongo:{{ .Values.imagesTags.mongo }}
+        command:
+          - /bin/sh
+          - -c
+          - |
+            until mongosh --host mongo-0.mongo-headless.{{ .Release.Namespace }}:27017 --eval "print(\"waited for connection\")"
+            do
+              sleep 5
+            done
+            mongosh --host mongo-0.mongo-headless.{{ .Release.Namespace }}:27017 --eval 'rs.initiate({
+              _id: "rs0",
+              members: [
+                  { _id: 0, host: "mongo-0.mongo-headless.{{ .Release.Namespace }}:27017" },
+                  { _id: 1, host: "mongo-1.mongo-headless.{{ .Release.Namespace }}:27017" },
+                  { _id: 2, host: "mongo-2.mongo-headless.{{ .Release.Namespace }}:27017" }
+              ]
+            })'
+      restartPolicy: OnFailure

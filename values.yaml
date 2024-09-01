@@ -1,0 +1,6 @@
+webhost: apps.klhymc1rs8d4802948.westeurope.aroapp.io
+
+imagesTags:
+  client: 8888
+  server: 8889
+  mongo: latest

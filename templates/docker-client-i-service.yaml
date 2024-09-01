@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: "2024-08-07T10:41:05Z"
+  labels:
+    app: docker-client-i
+    app.kubernetes.io/component: docker-client-i
+    app.kubernetes.io/instance: docker-client-i
+  name: docker-client-i
+  namespace: {{ .Release.Namespace }}
+  resourceVersion: "547487489"
+  uid: 157c7d18-ba44-4637-88f4-817c28c102d5
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: 8000-tcp
+    port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    deployment: docker-client-i
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
